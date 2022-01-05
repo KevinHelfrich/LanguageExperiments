@@ -1,0 +1,50 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+char = {
+    !("\"" | "\\") ~ ANY
+    | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+}
+
+stringInner = @{ char* }
+string = ${ "\"" ~ stringInner ~ "\"" }
+ident = @{ alpha+ }
+number = @{ "-"? ~ digit+ ~ ("." ~ digit+ )? }
+positiveInt = @{ digit+ }
+arrayElement = { ident ~ "[" ~ positiveInt ~ "]" }
+
+value = { arrayElement | ident | number | string }
+
+add = { "+" }
+subtract = { "-" }
+multiply = { "*" }
+divide = { "/" }
+power = { "^" }
+operator = _{ add | subtract | multiply | divide | power }
+
+expression = { term ~ (operator ~ term)* }
+term = _{ value | "(" ~ expression ~ ")" }
+
+boolEqual = { "==" }
+notEqual = { "!=" }
+greaterThan = { ">" }
+greaterThanEqual = { ">=" }
+lessThan = { "<" }
+lessThanEqual = { "<=" }
+comparator = _{ boolEqual | notEqual | greaterThanEqual | greaterThan | lessThanEqual | lessThan }
+
+comparison = { expression ~ comparator ~ expression }
+
+assignable = { arrayElement | ident }
+assignment = { assignable ~ "=" ~ expression ~ ";" }
+
+arglist = { value ~ ( "," ~ value )* }
+
+functionCall = { ident ~ "(" ~ arglist? ~ ")" ~ ";" }
+ifStatement = { "if" ~ "(" ~ comparison ~ ")" ~ block }
+whileLoop = { "while" ~ "(" ~ comparison ~ ")" ~ block }
+
+block = { "{" ~ code+ ~ "}" }
+code = _{ whileLoop | ifStatement | functionCall | assignment }
+
+program = _{ SOI ~ code+ ~ EOI }
+WHITESPACE = _{ " " | "\t" | "\n" | "\r" }

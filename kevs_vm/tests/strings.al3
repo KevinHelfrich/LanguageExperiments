@@ -1,0 +1,13 @@
+a = "Hello World!";
+Println(a);
+b = " Goodbye!";
+c = a + b;
+Println(c);
+a[1] = 3;
+Println(a);
+a[4] = a[1] - 3;
+Println(a);
+
+if(a[4] == 0) {
+    Println("zero");
+}

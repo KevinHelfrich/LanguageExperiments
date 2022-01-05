@@ -1,0 +1,66 @@
+alpha = { 'a'..'z' | 'A'..'Z' }
+digit = { '0'..'9' }
+char = {
+    !("\"" | "\\") ~ ANY
+    | "\\" ~ ("\"" | "\\" | "/" | "b" | "f" | "n" | "r" | "t")
+}
+
+inner = @{ char* }
+string = ${ "\"" ~ inner ~ "\"" }
+fileName = @{ ( alpha | digit )+ }
+ident = @{ alpha+ }
+number = @{ "-"? ~ digit+ ~ ("." ~ digit+ )? }
+array = { ident ~ "[" ~ value ~ "]" }
+value = { string | array | ident | number }
+assignable = _{ array | ident }
+arrayAssignment = { ident ~ "[]" ~ "=" ~ number ~ ( "," ~ number)* ~";" }
+
+print = { "print" | "Print" }
+printLine = { "println" | "Println" }
+namedFunction = _{ printLine | print }
+
+load = { "load" ~ fileName ~ ";" }
+
+add = { "+" }
+subtract = { "-" }
+multiply = { "*" }
+divide = { "/" }
+power = { "^" }
+operator = _{ add | subtract | multiply | divide | power }
+
+expression = { term ~ (operator ~ term)* }
+term = _{ value | "(" ~ expression ~ ")" }
+
+boolEqual = { "==" }
+notEqual = { "!=" }
+greaterThan = { ">" }
+greaterThanEqual = { ">=" }
+lessThan = { "<" }
+lessThanEqual = { "<=" }
+comparator = _{ boolEqual | notEqual | greaterThanEqual | greaterThan | lessThanEqual | lessThan }
+
+comparison = { expression ~ comparator ~ expression }
+
+and = { "&&" }
+or = { "||" }
+boolOperator = _{ and | or }
+
+block = { "{" ~ code+ ~ "}" }
+silentBlock = _{ "{" ~ code+ ~ "}" }
+
+arglist = { value ~ ( "," ~ value )* }
+
+functionCall = { (namedFunction | ident) ~ "(" ~ arglist? ~ ")" ~ ";" }
+functionDefiniton = { ident ~ "(" ~ arglist ~ ")" ~ "=>" ~ block }
+functionDefinitonNoArgs = { ident ~ "(" ~ ")" ~ "=>" ~ block }
+
+whileLoop = { "while" ~ "(" ~ comparison ~ ")" ~ silentBlock }
+ifStatement = { "if" ~ "(" ~ comparison ~ ")" ~ silentBlock }
+
+assignment = { assignable ~ "=" ~ expression ~ ";" }
+
+code = _{ load | functionDefiniton | functionDefinitonNoArgs | functionCall | assignment | whileLoop | ifStatement | arrayAssignment }
+
+program = _{ SOI ~ code+ ~ EOI }
+
+WHITESPACE = _{ " " | "\t" | "\n" | "\r" }

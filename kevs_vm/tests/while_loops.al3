@@ -1,0 +1,7 @@
+a = 9;
+while (a != 0) {
+    Print(a);
+    a = a - 1;
+}
+
+Println(a);

@@ -1,0 +1,4 @@
+a = "Hello World!";
+b = 0;
+Len(b, a);
+Println(b);

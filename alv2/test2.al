@@ -1,0 +1,10 @@
+a = 1 + 2 + 3;
+println(a);
+b = 11 * 2 / 7;
+println (b);
+c = 4 + 2 * 5;
+println(c);
+d = 4 + (2 + 3)^2;
+println(d);
+e = -3.141;
+println (e);

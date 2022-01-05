@@ -1,0 +1,11 @@
+a = "Hello World!";
+println(a);
+b = 12;
+c = "Count is: ";
+d = c + b;
+println(d);
+c = " is the count";
+e = b + c;
+println(e);
+f["world"] = 42;
+println(f["world"]);

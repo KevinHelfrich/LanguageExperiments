@@ -1,0 +1,14 @@
+b = 1 + 2 * 3 - (7 + 4/2^2);
+a = 42 * b;
+Println(b);
+Println(a);
+c = 11 + 12;
+Println(c);
+d = 11 - 12;
+Println(d);
+e = 11 * 12;
+Println(e);
+f = 12 / 6;
+Println(f);
+g = 12 ^ 2;
+Println(g);
